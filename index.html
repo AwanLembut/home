@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoFound — Temukan Partner Bisnis Idealmu</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1e;
+    --violet: #5b3ff5;
+    --violet-light: #7c5fff;
+    --violet-pale: #ede9ff;
+    --lavender: #b8a9ff;
+    --mint: #a8f5d5;
+    --white: #fafafa;
+    --muted: #8b8a99;
+    --card-bg: #ffffff;
+    --border: rgba(91,63,245,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(250,250,250,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 22px;
+    color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--violet); }
+  .logo span { color: var(--violet); }
+  nav ul { list-style: none; display: flex; gap: 36px; }
+  nav ul a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; transition: color .2s; }
+  nav ul a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--ink); color: var(--white);
+    padding: 10px 24px; border-radius: 100px;
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--violet); transform: translateY(-1px); }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(91,63,245,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(168,245,213,0.18) 0%, transparent 50%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--violet-pale); border: 1px solid var(--border);
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; color: var(--violet);
+    margin-bottom: 32px; position: relative; z-index: 1;
+    animation: fadeUp .6s ease both;
+  }
+  .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--violet); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 800; line-height: 1.0;
+    letter-spacing: -2px;
+    position: relative; z-index: 1;
+    animation: fadeUp .7s .1s ease both;
+  }
+  h1 .highlight {
+    color: var(--violet);
+    position: relative;
+  }
+  h1 .highlight::after {
+    content: '';
+    position: absolute; bottom: 4px; left: 0; right: 0; height: 6px;
+    background: var(--mint); border-radius: 3px; z-index: -1;
+    opacity: .7;
+  }
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 18px; color: var(--muted); max-width: 540px;
+    line-height: 1.7; position: relative; z-index: 1;
+    animation: fadeUp .7s .2s ease both;
+  }
+  .hero-actions {
+    margin-top: 40px;
+    display: flex; gap: 16px; align-items: center;
+    position: relative; z-index: 1;
+    animation: fadeUp .7s .3s ease both;
+  }
+  .btn-primary {
+    background: var(--violet); color: white;
+    padding: 14px 32px; border-radius: 100px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 30px rgba(91,63,245,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(91,63,245,0.45); }
+  .btn-ghost {
+    color: var(--ink); font-size: 15px; font-weight: 500; text-decoration: none;
+    display: flex; align-items: center; gap: 8px; padding: 14px 24px;
+    border-radius: 100px; border: 1.5px solid var(--border);
+    transition: border-color .2s, background .2s;
+  }
+  .btn-ghost:hover { border-color: var(--violet); background: var(--violet-pale); }
+
+  /* floating stats */
+  .hero-stats {
+    margin-top: 64px;
+    display: flex; gap: 40px; align-items: center;
+    position: relative; z-index: 1;
+    animation: fadeUp .7s .4s ease both;
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--ink); }
+  .stat-num span { color: var(--violet); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .stat-divider { width: 1px; height: 40px; background: var(--border); }
+
+  /* floating cards */
+  .hero-cards {
+    position: absolute; z-index: 1;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .hero-card-left { left: 4%; top: 35%; }
+  .hero-card-right { right: 4%; top: 42%; }
+  .mini-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    min-width: 180px;
+  }
+  .mini-card-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+  .mini-card-value { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-top: 4px; }
+  .mini-card-tag {
+    display: inline-block; margin-top: 6px;
+    background: var(--violet-pale); color: var(--violet);
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
+  }
+  .mini-card-tag.green { background: rgba(168,245,213,.3); color: #1a7a56; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ---- SECTION COMMONS ---- */
+  section { padding: 100px 60px; }
+  .section-label {
+    display: inline-block;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--violet); margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800; line-height: 1.1; letter-spacing: -1px;
+  }
+
+  /* ---- PROBLEM ---- */
+  #problem { background: var(--ink); color: white; }
+  #problem h2 { color: white; }
+  #problem .section-label { color: var(--lavender); }
+  .problem-grid {
+    margin-top: 56px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+  .prob-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 36px 32px;
+    transition: background .3s, transform .3s;
+    position: relative; overflow: hidden;
+  }
+  .prob-card::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(91,63,245,.3) 0%, transparent 70%);
+  }
+  .prob-card:hover { background: rgba(91,63,245,0.12); transform: translateY(-4px); }
+  .prob-icon { font-size: 36px; margin-bottom: 20px; }
+  .prob-card h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .prob-card p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .stat-callout {
+    margin-top: 56px;
+    background: var(--violet);
+    border-radius: 24px;
+    padding: 40px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .stat-callout-num { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; }
+  .stat-callout-text { font-size: 20px; max-width: 480px; opacity: .9; line-height: 1.6; }
+
+  /* ---- SOLUTION ---- */
+  #solution { background: white; }
+  .solution-layout {
+    margin-top: 60px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .features-list { display: flex; flex-direction: column; gap: 24px; }
+  .feature-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 24px;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+    cursor: default;
+  }
+  .feature-item:hover { border-color: var(--violet); box-shadow: 0 8px 30px rgba(91,63,245,.1); transform: translateX(4px); }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: var(--violet-pale); display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .feature-item h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .feature-item p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* mock app */
+  .mock-app {
+    background: var(--ink);
+    border-radius: 28px;
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .mock-app-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-dot.r { background: #ff5f57; }
+  .mock-dot.y { background: #febc2e; }
+  .mock-dot.g { background: #28c840; }
+  .mock-title { font-family: 'Syne', sans-serif; font-size: 13px; color: rgba(255,255,255,.4); margin-left: 8px; }
+  .mock-search {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 12px 16px;
+    font-size: 13px; color: rgba(255,255,255,.5);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mock-tag { font-size: 11px; background: rgba(91,63,245,.4); color: var(--lavender); padding: 3px 10px; border-radius: 100px; }
+  .mock-cards { display: flex; flex-direction: column; gap: 10px; }
+  .mock-profile {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .mock-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .mock-info { flex: 1; }
+  .mock-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: white; }
+  .mock-role { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
+  .mock-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .mock-skill { font-size: 10px; background: rgba(168,245,213,.15); color: #a8f5d5; padding: 2px 8px; border-radius: 100px; }
+  .mock-match {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; color: var(--mint);
+    flex-shrink: 0;
+  }
+
+  /* ---- COMPARISON ---- */
+  #compare { background: #f8f7ff; }
+  .compare-table {
+    margin-top: 48px;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0,0,0,.08);
+  }
+  .compare-header {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    background: var(--ink); color: white;
+    padding: 20px 32px;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  }
+  .compare-header .col-header:last-child { color: var(--lavender); }
+  .compare-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    padding: 18px 32px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .compare-row:hover { background: var(--violet-pale); }
+  .compare-row .col { font-size: 14px; }
+  .compare-row .col:first-child { color: var(--ink); font-weight: 500; }
+  .compare-row .col-manual { color: var(--muted); font-size: 13px; }
+  .compare-row .col-cofound { color: var(--violet); font-size: 13px; font-weight: 600; }
+  .check { color: #28c840; font-size: 16px; }
+  .cross { color: #ff5f57; font-size: 16px; }
+
+  /* ---- HOW IT WORKS ---- */
+  #how { background: white; }
+  .steps {
+    margin-top: 60px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  }
+  .step {
+    position: relative;
+    padding: 36px 28px;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    background: white;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+  }
+  .step:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(91,63,245,.1); border-color: var(--violet); }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--violet); color: white;
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .step-icon { font-size: 32px; margin-bottom: 14px; }
+  .step h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  /* connector */
+  .step::after {
+    content: '→';
+    position: absolute; top: 50%; right: -16px;
+    font-size: 20px; color: var(--lavender);
+    transform: translateY(-50%); z-index: 2;
+  }
+  .step:last-child::after { display: none; }
+
+  /* ---- TARGET ---- */
+  #target { background: var(--ink); color: white; }
+  #target h2 { color: white; }
+  #target .section-label { color: var(--lavender); }
+  .target-grid {
+    margin-top: 56px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  .target-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 36px;
+    transition: background .3s, transform .3s;
+  }
+  .target-card:hover { background: rgba(91,63,245,0.15); transform: translateY(-4px); }
+  .target-card.primary { border-color: var(--violet); background: rgba(91,63,245,0.12); }
+  .target-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 20px;
+    background: var(--violet); color: white;
+  }
+  .target-badge.secondary { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+  .target-card h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .target-card p { color: rgba(255,255,255,0.6); line-height: 1.7; font-size: 15px; }
+  .target-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .target-tag {
+    font-size: 12px; padding: 5px 14px; border-radius: 100px;
+    background: rgba(255,255,255,.08); color: rgba(255,255,255,.7);
+    border: 1px solid rgba(255,255,255,.1);
+  }
+
+  /* ---- PRICING ---- */
+  #pricing { background: #f8f7ff; }
+  .pricing-cards {
+    margin-top: 56px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+  .price-card {
+    background: white; border-radius: 28px;
+    padding: 36px 32px;
+    border: 1.5px solid var(--border);
+    transition: transform .3s, box-shadow .3s;
+    position: relative; overflow: hidden;
+  }
+  .price-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(91,63,245,.12); }
+  .price-card.featured {
+    background: var(--violet); color: white;
+    border-color: var(--violet);
+    box-shadow: 0 20px 60px rgba(91,63,245,.35);
+  }
+  .price-badge {
+    position: absolute; top: 20px; right: 20px;
+    background: var(--mint); color: var(--ink);
+    font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px;
+  }
+  .price-tier { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: .6; margin-bottom: 12px; }
+  .price-amount {
+    font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800;
+    line-height: 1; margin-bottom: 6px;
+  }
+  .price-period { font-size: 13px; opacity: .6; margin-bottom: 24px; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .price-features li { font-size: 14px; display: flex; align-items: center; gap: 10px; opacity: .8; }
+  .price-features li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; }
+  .price-card.featured .price-features li::before { color: var(--mint); }
+  .btn-plan {
+    display: block; text-align: center;
+    padding: 13px; border-radius: 100px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    background: var(--ink); color: white;
+    transition: opacity .2s;
+  }
+  .price-card.featured .btn-plan { background: white; color: var(--violet); }
+  .btn-plan:hover { opacity: .85; }
+
+  /* ---- CTA ---- */
+  #cta {
+    background: var(--violet);
+    text-align: center;
+    padding: 120px 60px;
+  }
+  #cta h2 { color: white; font-size: clamp(36px, 5vw, 72px); max-width: 700px; margin: 0 auto; }
+  #cta p { color: rgba(255,255,255,.75); font-size: 18px; margin: 20px auto 40px; max-width: 500px; line-height: 1.7; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; align-items: center; }
+  .btn-cta-white {
+    background: white; color: var(--violet);
+    padding: 14px 36px; border-radius: 100px;
+    font-size: 15px; font-weight: 700; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15);
+  }
+  .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.2); }
+  .btn-cta-outline {
+    border: 2px solid rgba(255,255,255,.5); color: white;
+    padding: 14px 32px; border-radius: 100px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-cta-outline:hover { border-color: white; background: rgba(255,255,255,.1); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,.5);
+    padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  footer .logo { color: white; }
+  footer p { font-size: 13px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,.4); font-size: 13px; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: white; }
+
+  /* ---- SCROLL ANIMATIONS ---- */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    nav ul, .nav-cta { display: none; }
+    section { padding: 70px 24px; }
+    .hero { padding: 110px 24px 60px; }
+    .hero-cards { display: none; }
+    h1 { font-size: 48px; }
+    .hero-stats { gap: 20px; }
+    .problem-grid, .steps, .pricing-cards { grid-template-columns: 1fr; }
+    .solution-layout { grid-template-columns: 1fr; }
+    .target-grid { grid-template-columns: 1fr; }
+    .compare-header, .compare-row { grid-template-columns: 1.5fr 1fr 1fr; padding: 14px 16px; }
+    #cta { padding: 80px 24px; }
+    .cta-actions { flex-direction: column; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .stat-callout { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-dot"></div>
+    Co<span>Found</span>
+  </a>
+  <ul>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solusi</a></li>
+    <li><a href="#how">Cara Kerja</a></li>
+    <li><a href="#target">Target</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Mulai Gratis →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- floating cards -->
+  <div class="hero-cards hero-card-left" style="animation-delay:0s">
+    <div class="mini-card">
+      <div class="mini-card-label">Match Terbaru</div>
+      <div class="mini-card-value">Rizky × Dina</div>
+      <div class="mini-card-tag">Tech + Marketing</div>
+    </div>
+  </div>
+  <div class="hero-cards hero-card-right" style="animation-delay:1.5s">
+    <div class="mini-card">
+      <div class="mini-card-label">Kecocokan</div>
+      <div class="mini-card-value">94%</div>
+      <div class="mini-card-tag green">✓ Visi Selaras</div>
+    </div>
+  </div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Platform Co-founder Matching #1 Indonesia
+  </div>
+
+  <h1>Temukan <span class="highlight">Partner Bisnis</span><br>yang Tepat</h1>
+
+  <p class="hero-sub">
+    Platform digital yang mempertemukan mahasiswa & fresh graduate untuk menemukan co-founder berdasarkan skill, modal, dan visi yang sejalan.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary">Daftar Sekarang — Gratis</a>
+    <a href="#how" class="btn-ghost">Lihat Cara Kerja ↓</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">40<span>%</span></div>
+      <div class="stat-label">Pemimpin bisnis sulit cari mitra</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">94<span>%</span></div>
+      <div class="stat-label">Akurasi matching skill</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">3x</div>
+      <div class="stat-label">Lebih cepat dari cara manual</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="reveal">
+    <span class="section-label">Masalah</span>
+    <h2>Mengapa Startup<br>Mahasiswa Gagal Lebih Awal?</h2>
+  </div>
+
+  <div class="problem-grid reveal">
+    <div class="prob-card">
+      <div class="prob-icon">🔗</div>
+      <h3>Keterbatasan Jaringan</h3>
+      <p>Pencarian partner masih mengandalkan relasi pribadi atau komunitas terbatas. Banyak potensi kolaborasi yang terlewat karena kurangnya platform yang tepat.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon">⚡</div>
+      <h3>Mismatch Skill & Visi</h3>
+      <p>Kolaborasi bisnis sering gagal karena salah pilih partner. Matching yang tidak terstruktur dan bias kedekatan menyebabkan tim tidak optimal.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon">🎯</div>
+      <h3>Ide Tidak Terealisasi</h3>
+      <p>Banyak mahasiswa memiliki ide dan skill, namun tidak bisa mengeksekusi karena kekurangan tim. Ekosistem kewirausahaan butuh sistem pencocokan yang lebih terstruktur.</p>
+    </div>
+  </div>
+
+  <div class="stat-callout reveal">
+    <div class="stat-callout-num">40%</div>
+    <div class="stat-callout-text">Pemimpin bisnis kesulitan menemukan mitra, partner, atau tenaga kerja yang punya keahlian sesuai dengan kebutuhan bisnis masa kini — Chase Bank Business Leaders Outlook, 2025</div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="reveal">
+    <span class="section-label">Solusi</span>
+    <h2>Platform Cerdas untuk<br>Pembentukan Tim Bisnis</h2>
+  </div>
+
+  <div class="solution-layout">
+    <div class="features-list reveal">
+      <div class="feature-item">
+        <div class="feature-icon">👤</div>
+        <div>
+          <h3>Profil Profesional Berbasis Skill & Modal</h3>
+          <p>Buat profil terstruktur yang menampilkan keahlian, modal awal, minat industri, dan peran yang dibutuhkan secara transparan.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔍</div>
+        <div>
+          <h3>Sistem Filter & Matching Partner</h3>
+          <p>Temukan partner berdasarkan gap skill yang kamu butuhkan, modal, role, dan minat industri dengan sistem pencocokan berbasis data.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div>
+          <h3>Indikator Kecocokan Terukur</h3>
+          <p>Lihat skor kecocokan berdasarkan kebutuhan dan preferensi kerja, sehingga kamu bisa memilih partner dengan lebih percaya diri.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <div>
+          <h3>Fitur Chat & Template Dokumen</h3>
+          <p>Mulai diskusi kolaborasi langsung dan gunakan template dokumen kerjasama resmi untuk formalisasi partnership bisnis.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mock App -->
+    <div class="mock-app reveal" style="transition-delay:.2s">
+      <div class="mock-app-bar">
+        <div class="mock-dot r"></div>
+        <div class="mock-dot y"></div>
+        <div class="mock-dot g"></div>
+        <span class="mock-title">CoFound — Cari Partner</span>
+      </div>
+      <div class="mock-search">
+        🔍 <span>Cari partner Marketing & Finance...</span>
+        <div class="mock-tag">Malang</div>
+        <div class="mock-tag">Modal &lt;5jt</div>
+      </div>
+      <div class="mock-cards">
+        <div class="mock-profile">
+          <div class="mock-avatar" style="background:rgba(91,63,245,.2)">🧑‍💼</div>
+          <div class="mock-info">
+            <div class="mock-name">Faiz Hisyam</div>
+            <div class="mock-role">Product & Tech · UB Semester 6</div>
+            <div class="mock-tags">
+              <span class="mock-skill">React</span>
+              <span class="mock-skill">Product</span>
+              <span class="mock-skill">Modal Rp 3jt</span>
+            </div>
+          </div>
+          <div class="mock-match">96%</div>
+        </div>
+        <div class="mock-profile" style="opacity:.7">
+          <div class="mock-avatar" style="background:rgba(168,245,213,.15)">👩‍🎨</div>
+          <div class="mock-info">
+            <div class="mock-name">Aliya Silmi</div>
+            <div class="mock-role">Marketing & Design · UM Semester 7</div>
+            <div class="mock-tags">
+              <span class="mock-skill">Branding</span>
+              <span class="mock-skill">Social Media</span>
+              <span class="mock-skill">Modal Rp 2jt</span>
+            </div>
+          </div>
+          <div class="mock-match">89%</div>
+        </div>
+        <div class="mock-profile" style="opacity:.5">
+          <div class="mock-avatar" style="background:rgba(255,180,50,.15)">👨‍💰</div>
+          <div class="mock-info">
+            <div class="mock-name">Rafi Ananda</div>
+            <div class="mock-role">Finance · UNIBRAW Semester 5</div>
+            <div class="mock-tags">
+              <span class="mock-skill">Akuntansi</span>
+              <span class="mock-skill">Analisis</span>
+              <span class="mock-skill">Modal Rp 5jt</span>
+            </div>
+          </div>
+          <div class="mock-match">84%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="reveal">
+    <span class="section-label">Perbandingan</span>
+    <h2>CoFound vs. Cara Manual</h2>
+  </div>
+
+  <div class="compare-table reveal">
+    <div class="compare-header">
+      <div class="col-header">Aspek</div>
+      <div class="col-header">Manual</div>
+      <div class="col-header">CoFound ✦</div>
+    </div>
+    <div class="compare-row">
+      <div class="col">Sumber partner</div>
+      <div class="col col-manual">Relasi pribadi / teman kampus</div>
+      <div class="col col-cofound">Pencocokan berbasis skill, modal & minat industri</div>
+    </div>
+    <div class="compare-row">
+      <div class="col">Sistem matching</div>
+      <div class="col col-manual"><span class="cross">✗</span> Tidak terstruktur, bias kedekatan</div>
+      <div class="col col-cofound"><span class="check">✓</span> Sistematis & berbasis data</div>
+    </div>
+    <div class="compare-row">
+      <div class="col">Transparansi skill & modal</div>
+      <div class="col col-manual"><span class="cross">✗</span> Tidak ada transparansi</div>
+      <div class="col col-cofound"><span class="check">✓</span> Profil digital terstruktur</div>
+    </div>
+    <div class="compare-row">
+      <div class="col">Jangkauan</div>
+      <div class="col col-manual">Terbatas lingkar pertemanan</div>
+      <div class="col col-cofound">Lebih luas, seluruh kota & nasional</div>
+    </div>
+    <div class="compare-row">
+      <div class="col">Risiko mismatch visi</div>
+      <div class="col col-manual"><span class="cross">✗</span> Tinggi, niat hanya di awal</div>
+      <div class="col col-cofound"><span class="check">✓</span> Lebih transparan & terukur</div>
+    </div>
+    <div class="compare-row" style="border-bottom:none">
+      <div class="col">Dokumen kerjasama</div>
+      <div class="col col-manual"><span class="cross">✗</span> Tidak tersedia</div>
+      <div class="col col-cofound"><span class="check">✓</span> Template resmi tersedia</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="reveal" style="text-align:center">
+    <span class="section-label">Cara Kerja</span>
+    <h2>Mulai Partner-mu dalam 4 Langkah</h2>
+  </div>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-icon">✍️</div>
+      <h3>Buat Profil</h3>
+      <p>Isi profil profesionalmu: skill, modal awal, minat industri, dan peran yang kamu butuhkan dari partner.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-icon">🔍</div>
+      <h3>Filter & Cari</h3>
+      <p>Gunakan sistem filter canggih untuk menemukan partner yang sesuai dengan gap kebutuhan bisnis kamu.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-icon">📊</div>
+      <h3>Cek Kecocokan</h3>
+      <p>Lihat skor kecocokan & indikator visi untuk memastikan kamu dan calon partner memiliki alignment yang kuat.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-icon">🤝</div>
+      <h3>Mulai Kolaborasi</h3>
+      <p>Chat, diskusi, dan formalisasi kerjasama dengan template dokumen resmi. Tim bisnis siap berjalan!</p>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET -->
+<section id="target">
+  <div class="reveal">
+    <span class="section-label">Target Pasar</span>
+    <h2>Dibuat untuk<br>Generasi Founder Baru</h2>
+  </div>
+
+  <div class="target-grid reveal">
+    <div class="target-card primary">
+      <div class="target-badge">Target Utama</div>
+      <h3>Mahasiswa Semester 4–8</h3>
+      <p>Berbasis di Kota Malang untuk MVP. Mahasiswa yang memiliki minat membangun bisnis namun belum memiliki partner dengan skill komplementer.</p>
+      <div class="target-tags">
+        <div class="target-tag">Usia 20–24 tahun</div>
+        <div class="target-tag">Kota Malang</div>
+        <div class="target-tag">Modal Rp 1–5 juta</div>
+        <div class="target-tag">Aktif entrepreneurship</div>
+        <div class="target-tag">Growth-oriented</div>
+      </div>
+    </div>
+    <div class="target-card">
+      <div class="target-badge secondary">Target Sekunder</div>
+      <h3>Fresh Graduate & Profesional Muda</h3>
+      <p>Fresh graduate 0–2 tahun, komunitas startup & inkubator kampus, serta profesional muda yang ingin membangun side business. Potensi ekspansi ke Surabaya, Jakarta, Bandung.</p>
+      <div class="target-tags">
+        <div class="target-tag">Fresh grad 0–2 tahun</div>
+        <div class="target-tag">Komunitas startup</div>
+        <div class="target-tag">Inkubator kampus</div>
+        <div class="target-tag">Side business</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="reveal" style="text-align:center">
+    <span class="section-label">Pricing</span>
+    <h2>Mulai Gratis, Upgrade Kapanpun</h2>
+    <p style="color:var(--muted);margin-top:12px;font-size:16px">Model freemium yang memastikan semua mahasiswa bisa mulai tanpa hambatan.</p>
+  </div>
+
+  <div class="pricing-cards">
+    <div class="price-card reveal">
+      <div class="price-tier">Free</div>
+      <div class="price-amount">Rp 0</div>
+      <div class="price-period">Selamanya gratis</div>
+      <ul class="price-features">
+        <li>Profil dasar</li>
+        <li>5 pencarian per hari</li>
+        <li>Lihat profil partner</li>
+        <li>3 kontak per bulan</li>
+      </ul>
+      <a href="#cta" class="btn-plan">Mulai Gratis</a>
+    </div>
+
+    <div class="price-card featured reveal" style="transition-delay:.15s">
+      <div class="price-badge">Populer</div>
+      <div class="price-tier">Premium</div>
+      <div class="price-amount">Rp 49K</div>
+      <div class="price-period">per bulan</div>
+      <ul class="price-features">
+        <li>Profil lengkap & featured</li>
+        <li>Pencarian tak terbatas</li>
+        <li>Chat langsung partner</li>
+        <li>Indikator kecocokan detail</li>
+        <li>Template dokumen kerjasama</li>
+        <li>Priority matching</li>
+      </ul>
+      <a href="#cta" class="btn-plan">Upgrade Premium</a>
+    </div>
+
+    <div class="price-card reveal" style="transition-delay:.3s">
+      <div class="price-tier">Kampus</div>
+      <div class="price-amount">Custom</div>
+      <div class="price-period">Untuk institusi</div>
+      <ul class="price-features">
+        <li>Akun untuk seluruh mahasiswa</li>
+        <li>Dashboard admin kampus</li>
+        <li>Integrasi program KWU</li>
+        <li>Laporan & analytics</li>
+        <li>Dedicated support</li>
+      </ul>
+      <a href="#cta" class="btn-plan">Hubungi Kami</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <h2 class="reveal">Siap Temukan Partner Bisnismu?</h2>
+  <p class="reveal">Bergabunglah dengan ribuan mahasiswa yang sudah menemukan tim impian mereka melalui CoFound.</p>
+  <div class="cta-actions reveal">
+    <a href="file:///C:/Users/M%20S%20I/Downloads/cofound-app-v2.html" class="btn-cta-white">Daftar Sekarang — Gratis</a>
+    <a href="#solution" class="btn-cta-outline">Pelajari Lebih Lanjut</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">
+    <div class="logo-dot"></div>
+    Co<span>Found</span>
+  </a>
+  <p>© 2025 CoFound · PT Sehat Ceria Selalu</p>
+  <div class="footer-links">
+    <a href="#">Tentang</a>
+    <a href="#">Kebijakan Privasi</a>
+    <a href="#">Kontak</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Staggered children in grids
+  document.querySelectorAll('.problem-grid, .steps, .target-grid, .features-list').forEach(grid => {
+    grid.querySelectorAll('.prob-card, .step, .target-card, .feature-item').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.1) + 's';
+    });
+  });
+</script>
+</body>
+</html>
